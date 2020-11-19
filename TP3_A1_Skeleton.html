@@ -17,7 +17,7 @@
 		<script src="js/MainInit.js"></script>
 		<script>
 			const data = TP3.Data.SmallTree;
-			
+
 			const grammar = TP3.Lindenmayer.iterateGrammar(data.str, data.dict, data.iters);
 			const nodeTree = TP3.Geometry.generateSkeleton(grammar, data.theta, data.alpha, data.decay);
 			TP3.Render.drawTreeSkeleton(nodeTree, scene);

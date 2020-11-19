@@ -12,7 +12,7 @@ TP3.Render = {
 	},
 	
 	drawTreeSkeleton: function (rootNode, scene, color = 0xffffff, matrix = new THREE.Matrix4()) {
-		
+		console.log(rootNode);
 		var stack = [];
 		stack.push(rootNode);
 			
