@@ -6,7 +6,8 @@ TP3.Lindenmayer = {
 
 		var endstring = "";
 		var split = str.split("");
-		var replace= false;
+		var replace = false;
+
 		for (it = 0; it < iters; it++) {
 
 			for (i = 0; i < split.length; i++) {
@@ -18,7 +19,9 @@ TP3.Lindenmayer = {
 						break;
 					}
 				}
-				if(!replace){endstring+=split[i];}
+				if (!replace) {
+					endstring+=split[i];
+				}
 			}
 			console.log(endstring);
 			if (it != iters-1) {
@@ -35,9 +38,11 @@ TP3.Lindenmayer = {
 
 		var endstring = "";
 		var split = str.split("");
+		var replace= false;
 
 		for (it = 0; it < iters; it++) {
 			for (i = 0; i < split.length; i++) {
+				replace = false;
 				for (j = 0; j < keys.length; j++) {
 					if (split[i] == keys[j]) {
 						if (values[j].prob != null) {
@@ -49,15 +54,20 @@ TP3.Lindenmayer = {
 
 								if (rand < sum) {
 									endstring += values[j].val[k];
+									replace = true;
 									break;
 								}
 							}
 						} else {
 							endstring += values[j].default;
+							replace = true;
 						}
 
 						break;
 					}
+				}
+				if (!replace) {
+					endstring += split[i];
 				}
 			}
 

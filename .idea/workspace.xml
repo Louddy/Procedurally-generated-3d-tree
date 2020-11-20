@@ -1,10 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="dc92d315-27a3-4710-824a-511357c42901" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TP3_A1_Skeleton.html" beforeDir="false" afterPath="$PROJECT_DIR$/TP3_A1_Skeleton.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TP3_Geometry.js" beforeDir="false" afterPath="$PROJECT_DIR$/TP3_Geometry.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TP3_Lindenmayer.js" beforeDir="false" afterPath="$PROJECT_DIR$/TP3_Lindenmayer.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -21,7 +37,9 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
@@ -50,15 +68,30 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="WindowStateProjectService">
+    <state x="187" y="127" width="1540" height="864" key="MergeDialog" timestamp="1605890836291">
+      <screen x="0" y="37" width="1920" height="1043" />
+    </state>
+    <state x="187" y="127" width="1540" height="864" key="MergeDialog/0.37.1920.1043@0.37.1920.1043" timestamp="1605890836291" />
     <state x="456" y="194" key="SettingsEditor" timestamp="1605559851949">
       <screen x="0" y="37" width="1920" height="1043" />
     </state>
     <state x="456" y="194" key="SettingsEditor/0.37.1920.1043@0.37.1920.1043" timestamp="1605559851949" />
-    <state x="763" y="474" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1605647734406">
+    <state x="763" y="474" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1605890819352">
       <screen x="0" y="37" width="1920" height="1043" />
     </state>
-    <state x="763" y="474" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.37.1920.1043@0.37.1920.1043" timestamp="1605647734406" />
+    <state x="763" y="474" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.37.1920.1043@0.37.1920.1043" timestamp="1605890819352" />
     <state x="622" y="257" key="run.anything.popup" timestamp="1605651814419">
       <screen x="0" y="37" width="1920" height="1043" />
     </state>
