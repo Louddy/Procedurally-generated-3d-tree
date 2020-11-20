@@ -17,81 +17,86 @@ class Node {
 TP3.Geometry = {
 	
 	generateSkeleton: function (str, theta, alpha, decay) {
-		// console.log(str);
-		//
-		// var turtle = new THREE.Matrix4();
-		// console.log(turtle);
-		//
-		// const vec = new THREE.Vector3(0, 1, 0);
-		//
-		// var stack = [];
-		//
-		// var rotate = new THREE.Matrix4();
-		// const translate = new THREE.Matrix4();
-		// translate.makeTranslation(0, 1, 0);
-		//
-		// const split = str.split("");
-		//
-		// var currentNode = null;
-		// var rootNode = null;
-		//
-		// for (i = 0; i < split.length; i++) {
-		// 	console.log(split[i]);
-		// 	console.log(turtle);
-		// 	if ((/[A-Z]/).test(split[i])) {
-		// 		if (currentNode == null) {
-		// 			currentNode = new Node();
-		// 			currentNode.p0 = new THREE.Vector3();
-		//
-		// 			currentNode.a0 = alpha;
-		// 		} else {
-		// 			var parent = currentNode;
-		// 			currentNode = new Node(parent);
-		// 			parent.childNode.push(currentNode);
-		//
-		// 			currentNode.p0 = vec.applyMatrix4(turtle);
-		//
-		// 			currentNode.a0 = parent.a1;
-		// 		}
-		// 		turtle = turtle.multiply(translate);
-		//
-		// 		currentNode.p1 = vec.applyMatrix4(turtle);
-		//
-		// 		currentNode.a1 = currentNode.a0 * decay;
-		//
-		// 		if (rootNode == null) {
-		// 			rootNode = currentNode;
-		// 		}
-		//
-		// 		console.log(currentNode.p1);
-		// 	} else if (split[i] == '[') {
-		// 		stack.push(currentNode);
-		// 		stack.push(turtle);
-		// 	} else if (split[i] == ']') {
-		// 		turtle = stack.pop();
-		// 		currentNode = stack.pop();
-		// 	} else if (split[i] == '+') {
-		// 		rotate.makeRotationX(theta);
-		// 		turtle.multiply(rotate);
-		// 	} else if (split[i] == '-') {
-		// 		rotate.makeRotationX(-theta);
-		// 		turtle.multiply(rotate);
-		// 	} else if (split[i] == '/') {
-		// 		rotate.makeRotationY(theta);
-		// 		turtle.multiply(rotate);
-		// 	} else if (split[i] == '\\') {
-		// 		rotate.makeRotationY(-theta);
-		// 		turtle.multiply(rotate);
-		// 	} else if (split[i] == '^') {
-		// 		rotate.makeRotationZ(theta);
-		// 		turtle.multiply(rotate);
-		// 	} else if (split[i] == '\_') {
-		// 		rotate.makeRotationZ(-theta);
-		// 		turtle.multiply(rotate);
-		// 	}
-		// 	console.log(turtle);
-		// }
-		// return rootNode;
+		//console.log(str);
+
+		let turtle = new THREE.Matrix4();
+		var stack = [];
+		var translate = new THREE.Matrix4();
+
+
+		const split = str.split("");
+
+		var currentNode = null;
+		var rootNode = null;
+		var parent = null;
+
+		for (i = 0; i < split.length; i++) {
+			//console.log(split[i]);
+			//console.log(turtle);
+			if ((/[A-Z]/).test(split[i])) {
+				if (currentNode == null) {
+					currentNode = new Node();
+					currentNode.p0 = new THREE.Vector3(0,0,0);
+					currentNode.a0 = alpha;
+					rootNode = currentNode;
+				} else {
+					parent = currentNode;
+					currentNode = new Node(parent);
+					parent.childNode.push(currentNode);
+
+					currentNode.p0 =  parent.p1;
+
+					currentNode.a0 =  parent.a1;
+				}
+				//translate = new THREE.Matrix4().makeTranslation(0, 1, 0);
+				//console.log(translate);
+				//turtle = turtle.multiply(translate);
+				//console.log(translate);
+
+				let vec = new THREE.Vector3(0,alpha,0);
+				currentNode.p1 = (vec.applyMatrix4(turtle)).add(currentNode.p0);
+				currentNode.a1 = currentNode.a0 * decay;
+				//console.log(currentNode.p1);
+			} else if (split[i] == '[') {
+				stack.push(currentNode);
+				stack.push(turtle.clone());
+			} else if (split[i] == ']') {
+				turtle.copy(stack.pop());
+				currentNode = stack.pop();
+			} else if (split[i] == '+') {
+				let rotate = new THREE.Matrix4();
+				rotate.identity();
+				rotate.makeRotationX(-theta);
+				turtle.multiply(rotate);
+			} else if (split[i] == '-') {
+				let rotate = new THREE.Matrix4();
+				rotate.identity();
+				rotate.makeRotationX(theta);
+				turtle.multiply(rotate);
+			} else if (split[i] == '/') {
+				let rotate = new THREE.Matrix4();
+				rotate.identity();
+				rotate.makeRotationY(-theta);
+				turtle.multiply(rotate);
+			} else if (split[i] == '\\') {
+				let rotate = new THREE.Matrix4();
+				rotate.identity();
+				rotate.makeRotationY(theta);
+				turtle.multiply(rotate);
+			} else if (split[i] == '^') {
+				let rotate = new THREE.Matrix4();
+				rotate.identity();
+				rotate.makeRotationZ(-theta);
+				turtle.multiply(rotate);
+			} else if (split[i] == '\_') {
+				let rotate = new THREE.Matrix4();
+				rotate.identity();
+				rotate.makeRotationZ(theta);
+				turtle.multiply(rotate);
+			}
+			//console.log(turtle);
+		}
+		return rootNode;
 	},
 	
 	simplifySkeleton: function (rootNode, rotationThreshold = 0.0001) {
