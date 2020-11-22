@@ -1,6 +1,60 @@
 TP3.Render = {
 	drawTreeRough: function (rootNode, scene, alpha, radialDivisions = 8, leavesCutoff = 0.1, leavesDensity = 10, matrix = new THREE.Matrix4()) {
-		//TODO
+		var stack = [];
+		var cylinderGeometries = [];
+		var leafGeometries = [];
+
+		const branchMaterial = new THREE.MeshLambertMaterial({color : 0x8B5A2B});
+		const leafMaterial = new THREE.MeshPhongMaterial({color : 0x3A5F0B});
+
+		stack.push(rootNode);
+
+		while (stack.length > 0) {
+			var currentNode = stack.pop();
+
+			for (var i = 0; i < currentNode.childNode.length; i++) {
+				stack.push(currentNode.childNode[i]);
+			}
+
+			var middleVec = new THREE.Vector3(currentNode.p1.x, currentNode.p1.y, currentNode.p1.z);
+			middleVec.add(currentNode.p0);
+			middleVec.multiplyScalar(0.5);
+
+			var translate = new THREE.Matrix4();
+			translate.makeTranslation(middleVec.x, middleVec.y, middleVec.z);
+
+			var p1moinsp0 = new THREE.Vector3();
+			p1moinsp0.add(currentNode.p1);
+			p1moinsp0.sub(currentNode.p0);
+
+			// var rotateX = new THREE.Matrix4();
+			// var rotateY = new THREE.Matrix4();
+			// var rotateZ = new THREE.Matrix4();
+			//
+			// rotateX.makeRotationX(Math.atan(p1moinsp0.y/p1moinsp0.z));
+			// rotateY.makeRotationX(Math.atan(p1moinsp0.x/p1moinsp0.z));
+			// rotateZ.makeRotationX(Math.atan(p1moinsp0.y/p1moinsp0.x));
+
+			var dist = currentNode.p0.distanceTo(currentNode.p1);
+			var cylinderGeometry = new THREE.CylinderBufferGeometry(currentNode.a0, currentNode.a1,
+				dist, radialDivisions);
+
+			// cylinderGeometry.lookAt(middleVec);
+
+			// cylinderGeometry.applyMatrix4(rotateX);
+			// cylinderGeometry.applyMatrix4(rotateY);
+			// cylinderGeometry.applyMatrix4(rotateZ);
+
+			cylinderGeometry.applyMatrix4(translate);
+
+			cylinderGeometries.push(cylinderGeometry);
+
+		}
+
+		var cylinderMergedGeometries = THREE.BufferGeometryUtils.mergeBufferGeometries(cylinderGeometries);
+		var cylinders = new THREE.Mesh(cylinderMergedGeometries, branchMaterial);
+		cylinders.applyMatrix4(matrix);
+		scene.add(cylinders);
 	},
 	
 	drawTreeHermite: function (rootNode, scene, alpha, leavesCutoff = 0.1, leavesDensity = 10, matrix = new THREE.Matrix4()) {
@@ -27,7 +81,8 @@ TP3.Render = {
 			
 			points.push(currentNode.p0);
 			points.push(currentNode.p1);
-			
+
+			console.log(currentNode.p0.distanceTo(currentNode.p1));
 		}
 		
 		var geometry = new THREE.BufferGeometry().setFromPoints(points);
@@ -38,7 +93,7 @@ TP3.Render = {
 		
 		return line.geometry;
 	},
-	
+
 	updateTreeSkeleton: function (geometryBuffer, rootNode) {
 		
 		var stack = [];

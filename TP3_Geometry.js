@@ -9,7 +9,7 @@ class Node {
 		
 		this.a0 = null; //Rayon de la branche a p0
 		this.a1 = null; //Rayon de la branche a p1
-		
+
 		this.sections = null; //Liste contenant une liste de points representant les segments circulaires du cylindre generalise
 	}
 }
@@ -45,18 +45,12 @@ TP3.Geometry = {
 					parent.childNode.push(currentNode);
 
 					currentNode.p0 =  parent.p1;
-
 					currentNode.a0 =  parent.a1;
 				}
-				//translate = new THREE.Matrix4().makeTranslation(0, 1, 0);
-				//console.log(translate);
-				//turtle = turtle.multiply(translate);
-				//console.log(translate);
 
 				let vec = new THREE.Vector3(0,alpha,0);
 				currentNode.p1 = (vec.applyMatrix4(turtle)).add(currentNode.p0);
 				currentNode.a1 = currentNode.a0 * decay;
-				//console.log(currentNode.p1);
 			} else if (split[i] == '[') {
 				stack.push(currentNode);
 				stack.push(turtle.clone());
