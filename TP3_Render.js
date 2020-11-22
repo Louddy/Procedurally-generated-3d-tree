@@ -9,6 +9,8 @@ TP3.Render = {
 
 		stack.push(rootNode);
 
+		var cylinderMergedGeometries;
+
 		while (stack.length > 0) {
 			var currentNode = stack.pop();
 
@@ -16,44 +18,28 @@ TP3.Render = {
 				stack.push(currentNode.childNode[i]);
 			}
 
-			var middleVec = new THREE.Vector3(currentNode.p1.x, currentNode.p1.y, currentNode.p1.z);
-			middleVec.add(currentNode.p0);
-			middleVec.multiplyScalar(0.5);
-
-			var translate = new THREE.Matrix4();
-			translate.makeTranslation(middleVec.x, middleVec.y, middleVec.z);
-
-			var p1moinsp0 = new THREE.Vector3();
-			p1moinsp0.add(currentNode.p1);
-			p1moinsp0.sub(currentNode.p0);
-
-			// var rotateX = new THREE.Matrix4();
-			// var rotateY = new THREE.Matrix4();
-			// var rotateZ = new THREE.Matrix4();
-			//
-			// rotateX.makeRotationX(Math.atan(p1moinsp0.y/p1moinsp0.z));
-			// rotateY.makeRotationX(Math.atan(p1moinsp0.x/p1moinsp0.z));
-			// rotateZ.makeRotationX(Math.atan(p1moinsp0.y/p1moinsp0.x));
+			var middleVec = currentNode.p1.add(currentNode.p0).multiplyScalar(0.5);
 
 			var dist = currentNode.p0.distanceTo(currentNode.p1);
 			var cylinderGeometry = new THREE.CylinderBufferGeometry(currentNode.a0, currentNode.a1,
 				dist, radialDivisions);
 
-			// cylinderGeometry.lookAt(middleVec);
+			cylinderGeometry.rotateX(Math.PI/2);
 
-			// cylinderGeometry.applyMatrix4(rotateX);
-			// cylinderGeometry.applyMatrix4(rotateY);
-			// cylinderGeometry.applyMatrix4(rotateZ);
+			var p0moinsp1 = new THREE.Vector3();
+			p0moinsp1.add(currentNode.p0);
+			p0moinsp1.sub(currentNode.p1);
+			cylinderGeometry.lookAt(p0moinsp1);
 
+			var translate = new THREE.Matrix4();
+			translate.makeTranslation(middleVec.x, middleVec.y, middleVec.z);
 			cylinderGeometry.applyMatrix4(translate);
 
 			cylinderGeometries.push(cylinderGeometry);
-
 		}
 
 		var cylinderMergedGeometries = THREE.BufferGeometryUtils.mergeBufferGeometries(cylinderGeometries);
 		var cylinders = new THREE.Mesh(cylinderMergedGeometries, branchMaterial);
-		cylinders.applyMatrix4(matrix);
 		scene.add(cylinders);
 	},
 	
