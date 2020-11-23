@@ -57,17 +57,17 @@ TP3.Render = {
 					var transX;
 					var transY;
 					var transZ;
-					var p0moinsp1plusalpha = p0moinsp1.multiplyScalar(1+alpha);
+					var p0moinsp1plusalpha = p0moinsp1.multiplyScalar(1+(alpha/p0moinsp1.length()));
 
-					// Je fais la translation vers middleVec et non currentNode.p0 parce que sinon les branches dépassent malgré le (p0-p1) * (1+alpha)
+					// Je fais la translation vers middleVec et non currentNode.p0 parce que sinon les branches dépassent malgré le (p0-p1) * (1+alpha
 					if (currentNode.a0 < alpha * leavesCutoff) {
-						transX = middleVec.x + (p0moinsp1.x * Math.random()) + radiusVector.x;
-						transY = middleVec.y + (p0moinsp1.y * Math.random()) + radiusVector.y;
-						transZ = middleVec.z + (p0moinsp1.z * Math.random()) + radiusVector.z;
+						transX = currentNode.p0.x + (p0moinsp1.x * Math.random()) + radiusVector.x;
+						transY = currentNode.p0.y + (p0moinsp1.y * Math.random()) + radiusVector.y;
+						transZ = currentNode.p0.z + (p0moinsp1.z * Math.random()) + radiusVector.z;
 					} else {
-						transX = middleVec.x + (p0moinsp1plusalpha.x * Math.random()) + radiusVector.x;
-						transY = middleVec.y + (p0moinsp1plusalpha.y * Math.random()) + radiusVector.y;
-						transZ = middleVec.z + (p0moinsp1plusalpha.z * Math.random()) + radiusVector.z;
+						transX = currentNode.p0.x + (p0moinsp1plusalpha.x * Math.random()) + radiusVector.x;
+						transY = currentNode.p0.y + (p0moinsp1plusalpha.y * Math.random()) + radiusVector.y;
+						transZ = currentNode.p0.z + (p0moinsp1plusalpha.z * Math.random()) + radiusVector.z;
 					}
 
 					translate.makeTranslation(transX, transY, transZ);
