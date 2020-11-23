@@ -9,8 +9,6 @@ TP3.Render = {
 
 		stack.push(rootNode);
 
-		var cylinderMergedGeometries;
-
 		while (stack.length > 0) {
 			var currentNode = stack.pop();
 
@@ -24,7 +22,7 @@ TP3.Render = {
 			var cylinderGeometry = new THREE.CylinderBufferGeometry(currentNode.a0, currentNode.a1,
 				dist, radialDivisions);
 
-			cylinderGeometry.rotateX(Math.PI/2);
+			cylinderGeometry.rotateX(Math.PI / 2);
 
 			var p0moinsp1 = new THREE.Vector3();
 			p0moinsp1.add(currentNode.p0);
@@ -35,12 +33,59 @@ TP3.Render = {
 			translate.makeTranslation(middleVec.x, middleVec.y, middleVec.z);
 			cylinderGeometry.applyMatrix4(translate);
 
+			// Feuilles
+			if ((currentNode.a0 < alpha * leavesCutoff) || (currentNode.childNode.length == 0)) {
+				for (i = 0; i < leavesDensity; i++) {
+					var leafGeometry = new THREE.PlaneBufferGeometry(alpha, alpha);
+					var rotation = Math.random() * 2 * Math.PI;
+					leafGeometry.rotateX(rotation);
+					leafGeometry.rotateY(rotation);
+					leafGeometry.rotateZ(rotation);
+
+					var posNeg;
+					if (Math.random() < 0.5) {
+						posNeg = 1;
+					} else {
+						posNeg = -1;
+					}
+
+					var radius = ((alpha / 2) * Math.random()) * posNeg;
+					var radiusVector= new THREE.Vector3();
+					radiusVector = p0moinsp1.normalize().cross(new THREE.Vector3(0, 0, 1)).normalize();
+					radiusVector.multiplyScalar(radius);
+
+					var transX;
+					var transY;
+					var transZ;
+					var p0moinsp1plusalpha = p0moinsp1.multiplyScalar(1+alpha);
+
+					// Je fais la translation vers middleVec et non currentNode.p0 parce que sinon les branches dépassent malgré le (p0-p1) * (1+alpha)
+					if (currentNode.a0 < alpha * leavesCutoff) {
+						transX = middleVec.x + (p0moinsp1.x * Math.random()) + radiusVector.x;
+						transY = middleVec.y + (p0moinsp1.y * Math.random()) + radiusVector.y;
+						transZ = middleVec.z + (p0moinsp1.z * Math.random()) + radiusVector.z;
+					} else {
+						transX = middleVec.x + (p0moinsp1plusalpha.x * Math.random()) + radiusVector.x;
+						transY = middleVec.y + (p0moinsp1plusalpha.y * Math.random()) + radiusVector.y;
+						transZ = middleVec.z + (p0moinsp1plusalpha.z * Math.random()) + radiusVector.z;
+					}
+
+					translate.makeTranslation(transX, transY, transZ);
+					leafGeometry.applyMatrix4(translate);
+
+					leafGeometries.push(leafGeometry);
+				}
+			}
+
 			cylinderGeometries.push(cylinderGeometry);
 		}
 
 		var cylinderMergedGeometries = THREE.BufferGeometryUtils.mergeBufferGeometries(cylinderGeometries);
+		var leafMergedGeometries = THREE.BufferGeometryUtils.mergeBufferGeometries(leafGeometries);
 		var cylinders = new THREE.Mesh(cylinderMergedGeometries, branchMaterial);
+		var leaves = new THREE.Mesh(leafMergedGeometries, leafMaterial);
 		scene.add(cylinders);
+		scene.add(leaves);
 	},
 	
 	drawTreeHermite: function (rootNode, scene, alpha, leavesCutoff = 0.1, leavesDensity = 10, matrix = new THREE.Matrix4()) {
