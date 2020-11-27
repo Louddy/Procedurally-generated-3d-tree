@@ -89,7 +89,89 @@ TP3.Render = {
 	},
 	
 	drawTreeHermite: function (rootNode, scene, alpha, leavesCutoff = 0.1, leavesDensity = 10, matrix = new THREE.Matrix4()) {
-		//TODO
+		const vertices = [];
+		const indices = [];
+		// const f32vertices = new Float32Array(vertices);
+		// const geometry = new THREE.BufferGeometry();
+		// geometry.setAttribute("position", new THREE.BufferAttribute(f32vertices, 3));
+
+		console.log(rootNode);
+		var stack = [];
+		stack.push(rootNode);
+
+		while (stack.length > 0) {
+			var currentNode = stack.pop();
+
+			for (var i=0; i<currentNode.childNode.length; i++) {
+				stack.push(currentNode.childNode[i]);
+			}
+
+			//Nec?
+			currentNode.indice = [];
+			//console.log(currentNode.indice);
+			//On push les sommets dans une belle liste
+			for (let i=0;i<currentNode.sections.length;i++){
+				currentNode.indice[i] = vertices.length/3;
+				for (let j=0;j<currentNode.sections[i].length;j++){
+					vertices.push(currentNode.sections[i][j].x);
+					vertices.push(currentNode.sections[i][j].y);
+					vertices.push(currentNode.sections[i][j].z);
+
+				}
+			}
+			//verif si cette condition passe (how about if(currentNode.parentNode)?)
+			if (!(currentNode.parentNode === undefined)){
+				indices.push();
+				//lien entre sections[0] et parent
+				//lien entre section[i+1] et section[i]
+
+				//indice du debut de top
+				let index0top;
+				//indice du debut de top
+				let index0bot;
+
+				//lien lien entre section[i+1] et section[i] i = 1 et length
+				for (i=0;i<currentNode.sections.length-1; i++){
+					//console.log(currentNode.sections[i])
+					index0top = currentNode.indice[i+1];
+					index0bot = currentNode.indice[i];
+					//console.log("bot:" + index0bot+ " top:" + index0top);
+					for (let j=0;j<currentNode.sections[i].length;j++){
+						// const a = currentNode.sections[i+1][j]
+						// const b = currentNode.sections[i+1][j+1]
+						// const c = currentNode.sections[i][j+1]
+
+						let a = index0top+j;
+						let b = index0top+(j+1)%5;
+						let c = index0bot+(j+1)%5;
+						indices.push(a,b,c);
+
+						a = index0top+j;
+						b = index0bot+(j+1)%5;
+						c = index0bot+j;
+						indices.push(a,b,c);
+
+					}
+				}
+			}
+
+
+
+
+
+		}
+		const f32vertices = new Float32Array(vertices);
+		const geometry = new THREE.BufferGeometry();
+		geometry.setAttribute("position", new THREE.BufferAttribute(f32vertices, 3));
+
+		geometry.setIndex(indices);
+		geometry.computeVertexNormals();
+
+		const branchMaterial = new THREE.MeshLambertMaterial({side: THREE.DoubleSide,color : 0x8B5A2B});
+		const mesh = new THREE.Mesh( geometry, branchMaterial );
+		scene.add(mesh);
+
+		console.log(vertices);
 	},
 	
 	updateTreeHermite: function (trunkGeometryBuffer, leavesGeometryBuffer, rootNode) {
@@ -112,8 +194,7 @@ TP3.Render = {
 			
 			points.push(currentNode.p0);
 			points.push(currentNode.p1);
-
-			console.log(currentNode.p0.distanceTo(currentNode.p1));
+			
 		}
 		
 		var geometry = new THREE.BufferGeometry().setFromPoints(points);
@@ -124,7 +205,7 @@ TP3.Render = {
 		
 		return line.geometry;
 	},
-
+	
 	updateTreeSkeleton: function (geometryBuffer, rootNode) {
 		
 		var stack = [];

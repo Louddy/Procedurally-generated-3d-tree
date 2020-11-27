@@ -23,7 +23,6 @@ TP3.Lindenmayer = {
 					endstring+=split[i];
 				}
 			}
-			console.log(endstring);
 			if (it != iters-1) {
 				split =	endstring.split("");
 				endstring = "";

@@ -25,7 +25,7 @@
 			const iters = 5;
 			const lengthDivisions = 4;
 			const radialDivisions = 5;
-
+			//console.log(TP3.Geometry.hermite(2,5,1,-1,0.5));
 			const grammar = TP3.Lindenmayer.iterateGrammar(data.str, data.dict, iters);
 			const nodeTree = TP3.Geometry.generateSkeleton(grammar, data.theta, data.alpha, data.decay);
 			
