@@ -25,7 +25,7 @@
 			const leavesCutoff = 0.1;
 			const leavesDensity = 4;
 			var [[trunkGeom, leavesGeom], nodeTree] = generateTree();
-			
+
 			
 			function generateTree() {
 				const grammar = TP3.Lindenmayer.iterateGrammarProb(data.str, data.dict, data.iters - 1);
@@ -35,7 +35,7 @@
 				TP3.Physics.initTree(nodeTree);
 				return [TP3.Render.drawTreeHermite(nodeTree, scene, data.alpha, leavesCutoff, leavesDensity), nodeTree];
 			}
-			
+
 			function animate() {
 				requestAnimationFrame(animate);
 				

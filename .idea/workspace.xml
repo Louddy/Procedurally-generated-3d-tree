@@ -20,7 +20,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="dc92d315-27a3-4710-824a-511357c42901" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2020-11-20,_11_47_a_m__[Default_Changelist]/shelved.patch" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TP3_D2_HermiteAnimate.html" beforeDir="false" afterPath="$PROJECT_DIR$/TP3_D2_HermiteAnimate.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TP3_Physics.js" beforeDir="false" afterPath="$PROJECT_DIR$/TP3_Physics.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TP3_Render.js" beforeDir="false" afterPath="$PROJECT_DIR$/TP3_Render.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -62,7 +65,13 @@
       <updated>1605555121823</updated>
       <workItem from="1605555123980" duration="24510000" />
       <workItem from="1605802994664" duration="18565000" />
-      <workItem from="1605986110392" duration="40641000" />
+      <workItem from="1605986110392" duration="41578000" />
+      <workItem from="1606433501607" duration="2518000" />
+      <workItem from="1606500955580" duration="7819000" />
+      <workItem from="1606666817654" duration="4343000" />
+      <workItem from="1606698292802" duration="16525000" />
+      <workItem from="1606844276442" duration="13174000" />
+      <workItem from="1607020035267" duration="2494000" />
     </task>
     <servers />
   </component>
@@ -94,14 +103,14 @@
       <screen x="0" y="37" width="1920" height="1043" />
     </state>
     <state x="570" y="173" width="774" height="773" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.37.1920.1043@0.37.1920.1043" timestamp="1606001824532" />
-    <state x="763" y="474" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1605890819352">
+    <state x="763" y="474" width="387" height="170" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1606498789481">
       <screen x="0" y="37" width="1920" height="1043" />
     </state>
-    <state x="763" y="474" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.37.1920.1043@0.37.1920.1043" timestamp="1605890819352" />
-    <state x="622" y="257" key="run.anything.popup" timestamp="1605651814419">
+    <state x="763" y="474" width="387" height="170" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.37.1920.1043@0.37.1920.1043" timestamp="1606498789481" />
+    <state x="622" y="257" key="run.anything.popup" timestamp="1606504233805">
       <screen x="0" y="37" width="1920" height="1043" />
     </state>
-    <state x="622" y="257" key="run.anything.popup/0.37.1920.1043@0.37.1920.1043" timestamp="1605651814419" />
+    <state x="622" y="257" key="run.anything.popup/0.37.1920.1043@0.37.1920.1043" timestamp="1606504233805" />
     <state x="623" y="267" width="672" height="678" key="search.everywhere.popup" timestamp="1606058648905">
       <screen x="0" y="37" width="1920" height="1043" />
     </state>
