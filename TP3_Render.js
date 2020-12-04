@@ -5,14 +5,14 @@ TP3.Render = {
 		var leafGeometries = [];
 
 		const branchMaterial = new THREE.MeshLambertMaterial({color : 0x8B5A2B});
-		const leafMaterial = new THREE.MeshPhongMaterial({side: THREE.DoubleSide,color : 0x3A5F0B});
+		const leafMaterial = new THREE.MeshPhongMaterial({color : 0x3A5F0B});
 
 		stack.push(rootNode);
 
 		while (stack.length > 0) {
 			var currentNode = stack.pop();
 
-			for (var i = 0; i < Math.min(currentNode.childNode.length,1); i++) {
+			for (var i = 0; i < currentNode.childNode.length; i++) {
 				stack.push(currentNode.childNode[i]);
 			}
 
@@ -24,6 +24,11 @@ TP3.Render = {
 
 			cylinderGeometry.rotateX(Math.PI / 2);
 
+			var p1moinsp0 = new THREE.Vector3();
+			p1moinsp0.add(currentNode.p1);
+			p1moinsp0.sub(currentNode.p0);
+			p1moinsp0.normalize();
+
 			var p0moinsp1 = new THREE.Vector3();
 			p0moinsp1.add(currentNode.p0);
 			p0moinsp1.sub(currentNode.p1);
@@ -31,12 +36,12 @@ TP3.Render = {
 
 			var translate = new THREE.Matrix4();
 			translate.makeTranslation(middleVec.x, middleVec.y, middleVec.z);
-			cylinderGeometry.applyMatrix4 (translate);
+			cylinderGeometry.applyMatrix4(translate);
 
 			// Feuilles
 			if ((currentNode.a0 < alpha * leavesCutoff) || (currentNode.childNode.length == 0)) {
 				for (i = 0; i < leavesDensity; i++) {
-					var leafGeometry = new THREE.PlaneBufferGeometry(alpha/2, alpha/2);
+					var leafGeometry = new THREE.PlaneBufferGeometry(alpha, alpha);
 					var rotation = Math.random() * 2 * Math.PI;
 					leafGeometry.rotateX(rotation);
 					leafGeometry.rotateY(rotation);
@@ -50,25 +55,27 @@ TP3.Render = {
 					}
 
 					var radius = ((alpha / 2) * Math.random()) * posNeg;
-					var radiusVector= new THREE.Vector3();
+					var radiusVector = new THREE.Vector3();
 					radiusVector = p0moinsp1.normalize().cross(new THREE.Vector3(0, 0, 1)).normalize();
 					radiusVector.multiplyScalar(radius);
+					radiusVector.applyAxisAngle(p1moinsp0, rotation);
 
 					var transX;
 					var transY;
 					var transZ;
+					// Est-ce qu'on veut utiliser p1moinsp0 plutôt?
 					var p0moinsp1plusalpha = p0moinsp1.multiplyScalar(1+(alpha/p0moinsp1.length()));
 
-					// Je fais la translation vers middleVec et non currentNode.p0 parce que sinon les branches dépassent malgré le (p0-p1) * (1+alpha
-					if (currentNode.a0 < alpha * leavesCutoff) {
-						transX = currentNode.p0.x + (p0moinsp1.x * Math.random()) + radiusVector.x;
-						transY = currentNode.p0.y + (p0moinsp1.y * Math.random()) + radiusVector.y;
-						transZ = currentNode.p0.z + (p0moinsp1.z * Math.random()) + radiusVector.z;
-					} else {
-						console.log("pass");
+					if (currentNode.childNode.length == 0) {
+						console.log("pass1");
 						transX = currentNode.p0.x + (p0moinsp1plusalpha.x * Math.random()) + radiusVector.x;
 						transY = currentNode.p0.y + (p0moinsp1plusalpha.y * Math.random()) + radiusVector.y;
 						transZ = currentNode.p0.z + (p0moinsp1plusalpha.z * Math.random()) + radiusVector.z;
+					} else {
+						console.log("pass2");
+						transX = currentNode.p0.x + (p0moinsp1.x * Math.random()) + radiusVector.x;
+						transY = currentNode.p0.y + (p0moinsp1.y * Math.random()) + radiusVector.y;
+						transZ = currentNode.p0.z + (p0moinsp1.z * Math.random()) + radiusVector.z;
 					}
 
 					translate.makeTranslation(transX, transY, transZ);
