@@ -99,6 +99,7 @@ TP3.Render = {
 	drawTreeHermite: function (rootNode, scene, alpha, leavesCutoff = 0.1, leavesDensity = 10, matrix = new THREE.Matrix4()) {
 		const vertices = [];
 		const indices = [];
+		var leafVertices = [];
 		// const f32vertices = new Float32Array(vertices);
 		// const geometry = new THREE.BufferGeometry();
 		// geometry.setAttribute("position", new THREE.BufferAttribute(f32vertices, 3));
@@ -176,10 +177,100 @@ TP3.Render = {
 			p0moinsp1.add(currentNode.p0);
 			p0moinsp1.sub(currentNode.p1);
 
+			// Feuilles
+			if ((currentNode.a0 < alpha * leavesCutoff) || (currentNode.childNode.length == 0)) {
+				for (i = 0; i < leavesDensity; i++) {
+					// var leafGeometry = new THREE.PlaneBufferGeometry(alpha, alpha);
 
+					// Création d'un triangle équilatéral d'arête alpha
+					var rotate = new THREE.Matrix4();
+					var trianglep1 = new THREE.Vector3(alpha / 2, 0, 0);
+					var trianglep2 = new THREE.Vector3(alpha / 2, 0, 0);
+					var trianglep3 = new THREE.Vector3(alpha / 2, 0, 0);
 
+					rotate.makeRotationY(THREE.MathUtils.degToRad(120));
+					trianglep2.applyMatrix4(rotate);
+					rotate.makeRotationY(THREE.MathUtils.degToRad(240));
+					trianglep3.applyMatrix4(rotate);
 
+					var rotation = Math.random() * 2 * Math.PI;
+
+					rotate.makeRotationX(rotation);
+					trianglep1.applyMatrix4(rotate);
+					trianglep2.applyMatrix4(rotate);
+					trianglep3.applyMatrix4(rotate);
+
+					rotate.makeRotationY(rotation);
+					trianglep1.applyMatrix4(rotate);
+					trianglep2.applyMatrix4(rotate);
+					trianglep3.applyMatrix4(rotate);
+
+					rotate.makeRotationZ(rotation);
+					trianglep1.applyMatrix4(rotate);
+					trianglep2.applyMatrix4(rotate);
+					trianglep3.applyMatrix4(rotate);
+
+					var posNeg;
+					if (Math.random() < 0.5) {
+						posNeg = 1;
+					} else {
+						posNeg = -1;
+					}
+
+					var p0moinsp1 = new THREE.Vector3();
+					var p1moinsp0 = new THREE.Vector3();
+					p0moinsp1.add(currentNode.p0);
+					p0moinsp1.sub(currentNode.p1);
+					p1moinsp0.add(currentNode.p1);
+					p1moinsp0.sub(currentNode.p0);
+
+					var radius = ((alpha / 2) * Math.random()) * posNeg;
+					var radiusVector = new THREE.Vector3();
+					radiusVector = p0moinsp1.normalize().cross(new THREE.Vector3(0, 0, 1)).normalize();
+					radiusVector.multiplyScalar(radius);
+					radiusVector.applyAxisAngle(p1moinsp0, rotation);
+
+					var transX;
+					var transY;
+					var transZ;
+					// Est-ce qu'on veut utiliser p1moinsp0 plutôt?
+					var p0moinsp1plusalpha = p0moinsp1.multiplyScalar(1+(alpha/p0moinsp1.length()));
+
+					if (currentNode.childNode.length == 0) {
+						// console.log("pass1");
+						transX = currentNode.p0.x + (p0moinsp1plusalpha.x * Math.random()) + radiusVector.x;
+						transY = currentNode.p0.y + (p0moinsp1plusalpha.y * Math.random()) + radiusVector.y;
+						transZ = currentNode.p0.z + (p0moinsp1plusalpha.z * Math.random()) + radiusVector.z;
+					} else {
+						// console.log("pass2");
+						transX = currentNode.p0.x + (p0moinsp1.x * Math.random()) + radiusVector.x;
+						transY = currentNode.p0.y + (p0moinsp1.y * Math.random()) + radiusVector.y;
+						transZ = currentNode.p0.z + (p0moinsp1.z * Math.random()) + radiusVector.z;
+					}
+
+					var translate = new THREE.Matrix4();
+
+					translate.makeTranslation(transX, transY, transZ);
+					trianglep1.applyMatrix4(translate);
+					trianglep2.applyMatrix4(translate);
+					trianglep3.applyMatrix4(translate);
+
+					leafVertices.push(trianglep1.x);
+					leafVertices.push(trianglep1.y);
+					leafVertices.push(trianglep1.z);
+
+					leafVertices.push(trianglep2.x);
+					leafVertices.push(trianglep2.y);
+					leafVertices.push(trianglep2.z);
+
+					leafVertices.push(trianglep3.x);
+					leafVertices.push(trianglep3.y);
+					leafVertices.push(trianglep3.z);
+				}
+
+			}
 		}
+
 		//On rajoute la base (Est-ce que l'on veut ca)
 		indices.push(0,2,1);
 		indices.push(2,4,3);
@@ -192,11 +283,23 @@ TP3.Render = {
 		geometry.setIndex(indices);
 		geometry.computeVertexNormals();
 
-		const branchMaterial = new THREE.MeshLambertMaterial({side: THREE.DoubleSide,color : 0x8B5A2B});
-		const mesh = new THREE.Mesh( geometry, branchMaterial );
-		scene.add(mesh);
+		const f32leafVertices = new Float32Array(leafVertices);
+		const leafGeometry = new THREE.BufferGeometry();
+		leafGeometry.setAttribute("position", new THREE.BufferAttribute(f32leafVertices, 3));
 
-		console.log(vertices);
+		leafGeometry.computeVertexNormals();
+
+		const branchMaterial = new THREE.MeshLambertMaterial({side: THREE.DoubleSide, color : 0x8B5A2B});
+		const mesh = new THREE.Mesh( geometry, branchMaterial );
+
+		const leafMaterial = new THREE.MeshPhongMaterial({side: THREE.DoubleSide, color : 0x3A5F0B});
+		leafMaterial.flatShading = true;
+		const leaves = new THREE.Mesh( leafGeometry, leafMaterial );
+
+		scene.add(mesh);
+		scene.add(leaves);
+
+		console.log(leafVertices);
 	},
 	
 	updateTreeHermite: function (trunkGeometryBuffer, leavesGeometryBuffer, rootNode) {

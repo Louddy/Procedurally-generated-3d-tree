@@ -19,7 +19,11 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="dc92d315-27a3-4710-824a-511357c42901" name="Default Changelist" comment="pas toute fait esti" />
+    <list default="true" id="dc92d315-27a3-4710-824a-511357c42901" name="Default Changelist" comment="pas toute fait esti">
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2020-11-27,_12_39_p_m__[Default_Changelist]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TP3_Render.js" beforeDir="false" afterPath="$PROJECT_DIR$/TP3_Render.js" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -98,35 +102,5 @@
     <MESSAGE value="toute faite esti" />
     <MESSAGE value="pas toute fait esti" />
     <option name="LAST_COMMIT_MESSAGE" value="pas toute fait esti" />
-  </component>
-  <component name="WindowStateProjectService">
-    <state x="187" y="127" width="1540" height="864" key="MergeDialog" timestamp="1605890836291">
-      <screen x="0" y="37" width="1920" height="1043" />
-    </state>
-    <state x="187" y="127" width="1540" height="864" key="MergeDialog/0.37.1920.1043@0.37.1920.1043" timestamp="1605890836291" />
-    <state x="456" y="194" key="SettingsEditor" timestamp="1605559851949">
-      <screen x="0" y="37" width="1920" height="1043" />
-    </state>
-    <state x="456" y="194" key="SettingsEditor/0.37.1920.1043@0.37.1920.1043" timestamp="1605559851949" />
-    <state x="552" y="253" key="Vcs.Push.Dialog.v2" timestamp="1606498740246">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="552" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1606498740246" />
-    <state x="570" y="173" width="774" height="773" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1606001824532">
-      <screen x="0" y="37" width="1920" height="1043" />
-    </state>
-    <state x="570" y="173" width="774" height="773" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.37.1920.1043@0.37.1920.1043" timestamp="1606001824532" />
-    <state x="763" y="474" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1605890819352">
-      <screen x="0" y="37" width="1920" height="1043" />
-    </state>
-    <state x="763" y="474" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.37.1920.1043@0.37.1920.1043" timestamp="1605890819352" />
-    <state x="622" y="257" key="run.anything.popup" timestamp="1605651814419">
-      <screen x="0" y="37" width="1920" height="1043" />
-    </state>
-    <state x="622" y="257" key="run.anything.popup/0.37.1920.1043@0.37.1920.1043" timestamp="1605651814419" />
-    <state x="623" y="267" width="672" height="678" key="search.everywhere.popup" timestamp="1606058648905">
-      <screen x="0" y="37" width="1920" height="1043" />
-    </state>
-    <state x="623" y="267" width="672" height="678" key="search.everywhere.popup/0.37.1920.1043@0.37.1920.1043" timestamp="1606058648905" />
   </component>
 </project>
