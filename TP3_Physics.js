@@ -63,7 +63,11 @@ TP3.Physics = {
 		p1tplusdtmoinsp0.normalize();
 
 		var rotateBranch = new THREE.Matrix4();
-		[rotAxis, rotAngle] = TP3.Geometry.findRotation(p1moinsp0, p1tplusdtmoinsp0);
+
+		if (p1moinsp0.dot(p1tplusdtmoinsp0) > 1e-6) { // Sinon le squelette disparait devant nos yeux après quelques secondes.
+			[rotAxis, rotAngle] = TP3.Geometry.findRotation(p1moinsp0, p1tplusdtmoinsp0);
+		}
+
 		rotateBranch.makeRotationAxis(rotAxis, rotAngle);
 
 		var toOrigin = new THREE.Matrix4();
@@ -124,18 +128,18 @@ TP3.Physics = {
 			node.childNode[i].p0.applyMatrix4(transform);
 			node.childNode[i].p1.applyMatrix4(transform);
 
-			if (node.childNode[i].childNode.length == 0) {
-				var xd1 = new THREE.Vector3();
-				var xd2 = new THREE.Vector3();
-				xd1.add(node.childNode[i].bp1);
-				xd1.sub(node.childNode[i].bp0);
-				xd2.add(node.childNode[i].p1);
-				xd2.sub(node.childNode[i].p0);
-
-				//console.log("conservation ?");
-				//console.log(xd1.length());
-				//console.log(xd2.length());
-			}
+			// if (node.childNode[i].childNode.length == 0) {
+			// 	var xd1 = new THREE.Vector3();
+			// 	var xd2 = new THREE.Vector3();
+			// 	xd1.add(node.childNode[i].bp1);
+			// 	xd1.sub(node.childNode[i].bp0);
+			// 	xd2.add(node.childNode[i].p1);
+			// 	xd2.sub(node.childNode[i].p0);
+			//
+			// 	//console.log("conservation ?");
+			// 	//console.log(xd1.length());
+			// 	//console.log(xd2.length());
+			// }
 
 			// console.log(node.childNode[i].childNode.length);
 

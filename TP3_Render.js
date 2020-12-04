@@ -67,12 +67,10 @@ TP3.Render = {
 					var p0moinsp1plusalpha = p0moinsp1.multiplyScalar(1+(alpha/p0moinsp1.length()));
 
 					if (currentNode.childNode.length == 0) {
-						console.log("pass1");
 						transX = currentNode.p0.x + (p0moinsp1plusalpha.x * Math.random()) + radiusVector.x;
 						transY = currentNode.p0.y + (p0moinsp1plusalpha.y * Math.random()) + radiusVector.y;
 						transZ = currentNode.p0.z + (p0moinsp1plusalpha.z * Math.random()) + radiusVector.z;
 					} else {
-						console.log("pass2");
 						transX = currentNode.p0.x + (p0moinsp1.x * Math.random()) + radiusVector.x;
 						transY = currentNode.p0.y + (p0moinsp1.y * Math.random()) + radiusVector.y;
 						transZ = currentNode.p0.z + (p0moinsp1.z * Math.random()) + radiusVector.z;
@@ -166,17 +164,6 @@ TP3.Render = {
 				indices.push(index0 + 2, index0 + 0, index0 + 4);
 			}
 
-			var middleVec = currentNode.p1.add(currentNode.p0).multiplyScalar(0.5);
-
-			var dist = currentNode.p0.distanceTo(currentNode.p1);
-
-			var translate = new THREE.Matrix4();
-			translate.makeTranslation(middleVec.x, middleVec.y, middleVec.z);
-
-			var p0moinsp1 = new THREE.Vector3();
-			p0moinsp1.add(currentNode.p0);
-			p0moinsp1.sub(currentNode.p1);
-
 			// Feuilles
 			if ((currentNode.a0 < alpha * leavesCutoff) || (currentNode.childNode.length == 0)) {
 				for (i = 0; i < leavesDensity; i++) {
@@ -233,16 +220,14 @@ TP3.Render = {
 					var transX;
 					var transY;
 					var transZ;
-					// Est-ce qu'on veut utiliser p1moinsp0 plutôt?
+
 					var p0moinsp1plusalpha = p0moinsp1.multiplyScalar(1+(alpha/p0moinsp1.length()));
 
 					if (currentNode.childNode.length == 0) {
-						// console.log("pass1");
 						transX = currentNode.p0.x + (p0moinsp1plusalpha.x * Math.random()) + radiusVector.x;
 						transY = currentNode.p0.y + (p0moinsp1plusalpha.y * Math.random()) + radiusVector.y;
 						transZ = currentNode.p0.z + (p0moinsp1plusalpha.z * Math.random()) + radiusVector.z;
 					} else {
-						// console.log("pass2");
 						transX = currentNode.p0.x + (p0moinsp1.x * Math.random()) + radiusVector.x;
 						transY = currentNode.p0.y + (p0moinsp1.y * Math.random()) + radiusVector.y;
 						transZ = currentNode.p0.z + (p0moinsp1.z * Math.random()) + radiusVector.z;
@@ -267,7 +252,6 @@ TP3.Render = {
 					leafVertices.push(trianglep3.y);
 					leafVertices.push(trianglep3.z);
 				}
-
 			}
 		}
 
