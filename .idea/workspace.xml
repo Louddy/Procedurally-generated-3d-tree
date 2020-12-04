@@ -19,15 +19,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="dc92d315-27a3-4710-824a-511357c42901" name="Default Changelist" comment="toute faite esti">
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2020-11-20,_11_47_a_m__[Default_Changelist]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2020-11-20__11_47_a_m___Default_Changelist_.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TP3_B2_RenderRough.html" beforeDir="false" afterPath="$PROJECT_DIR$/TP3_B2_RenderRough.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TP3_Geometry.js" beforeDir="false" afterPath="$PROJECT_DIR$/TP3_Geometry.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TP3_Physics.js" beforeDir="false" afterPath="$PROJECT_DIR$/TP3_Physics.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TP3_Render.js" beforeDir="false" afterPath="$PROJECT_DIR$/TP3_Render.js" afterDir="false" />
-    </list>
+    <list default="true" id="dc92d315-27a3-4710-824a-511357c42901" name="Default Changelist" comment="pas toute fait esti" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -68,7 +60,7 @@
       <workItem from="1605555123980" duration="24510000" />
       <workItem from="1605802994664" duration="18565000" />
       <workItem from="1605986110392" duration="40641000" />
-      <workItem from="1607011731966" duration="14286000" />
+      <workItem from="1607011731966" duration="14675000" />
     </task>
     <task id="LOCAL-00001" summary="toute faite esti">
       <created>1606498727938</created>
@@ -77,7 +69,14 @@
       <option name="project" value="LOCAL" />
       <updated>1606498727938</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="pas toute fait esti">
+      <created>1607107911466</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1607107911466</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -97,7 +96,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="toute faite esti" />
-    <option name="LAST_COMMIT_MESSAGE" value="toute faite esti" />
+    <MESSAGE value="pas toute fait esti" />
+    <option name="LAST_COMMIT_MESSAGE" value="pas toute fait esti" />
   </component>
   <component name="WindowStateProjectService">
     <state x="187" y="127" width="1540" height="864" key="MergeDialog" timestamp="1605890836291">
