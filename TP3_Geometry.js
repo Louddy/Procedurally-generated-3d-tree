@@ -12,6 +12,7 @@ class Node {
 
 		this.sections = []; //Liste contenant une liste de points representant les segments circulaires du cylindre generalise
 		this.centre = [];
+		this.longueur = null;
 	}
 }
 
@@ -52,6 +53,7 @@ TP3.Geometry = {
 				let vec = new THREE.Vector3(0,alpha,0);
 				currentNode.p1 = (vec.applyMatrix4(turtle)).add(currentNode.p0);
 				currentNode.a1 = currentNode.a0 * decay;
+				currentNode.longueur = (currentNode.p1.clone().sub(currentNode.p0)).length()
 			} else if (split[i] == '[') {
 				stack.push(currentNode);
 				stack.push(turtle.clone());
@@ -112,6 +114,7 @@ TP3.Geometry = {
 			if (Math.acos(cosangle) <= rotationThreshold || Math.acos(vect1.dot(vect2)) >= rotationThreshold) {
 				//console.log(rootNode);
 				rootNode.p1 = rootNode.childNode[0].p1;
+				rootNode.longueur = (rootNode.p1.clone().sub(rootNode.p0)).length()
 				rootNode.a1 = rootNode.childNode[0].a1;
 				//rootNode.childNode[0].childNode[0].p0 =rootNode.p0;
 				//rootNode.childNode[0].childNode[0].a0 =rootNode.a0;

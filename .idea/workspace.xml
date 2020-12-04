@@ -19,8 +19,13 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="dc92d315-27a3-4710-824a-511357c42901" name="Default Changelist" comment="">
+    <list default="true" id="dc92d315-27a3-4710-824a-511357c42901" name="Default Changelist" comment="toute faite esti">
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2020-11-20,_11_47_a_m__[Default_Changelist]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2020-11-20__11_47_a_m___Default_Changelist_.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TP3_B2_RenderRough.html" beforeDir="false" afterPath="$PROJECT_DIR$/TP3_B2_RenderRough.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TP3_Geometry.js" beforeDir="false" afterPath="$PROJECT_DIR$/TP3_Geometry.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TP3_Physics.js" beforeDir="false" afterPath="$PROJECT_DIR$/TP3_Physics.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TP3_Render.js" beforeDir="false" afterPath="$PROJECT_DIR$/TP3_Render.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -63,7 +68,16 @@
       <workItem from="1605555123980" duration="24510000" />
       <workItem from="1605802994664" duration="18565000" />
       <workItem from="1605986110392" duration="40641000" />
+      <workItem from="1607011731966" duration="14286000" />
     </task>
+    <task id="LOCAL-00001" summary="toute faite esti">
+      <created>1606498727938</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1606498727938</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -81,6 +95,10 @@
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="toute faite esti" />
+    <option name="LAST_COMMIT_MESSAGE" value="toute faite esti" />
+  </component>
   <component name="WindowStateProjectService">
     <state x="187" y="127" width="1540" height="864" key="MergeDialog" timestamp="1605890836291">
       <screen x="0" y="37" width="1920" height="1043" />
@@ -90,6 +108,10 @@
       <screen x="0" y="37" width="1920" height="1043" />
     </state>
     <state x="456" y="194" key="SettingsEditor/0.37.1920.1043@0.37.1920.1043" timestamp="1605559851949" />
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2" timestamp="1606498740246">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1606498740246" />
     <state x="570" y="173" width="774" height="773" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1606001824532">
       <screen x="0" y="37" width="1920" height="1043" />
     </state>

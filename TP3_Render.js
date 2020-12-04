@@ -5,14 +5,14 @@ TP3.Render = {
 		var leafGeometries = [];
 
 		const branchMaterial = new THREE.MeshLambertMaterial({color : 0x8B5A2B});
-		const leafMaterial = new THREE.MeshPhongMaterial({color : 0x3A5F0B});
+		const leafMaterial = new THREE.MeshPhongMaterial({side: THREE.DoubleSide,color : 0x3A5F0B});
 
 		stack.push(rootNode);
 
 		while (stack.length > 0) {
 			var currentNode = stack.pop();
 
-			for (var i = 0; i < currentNode.childNode.length; i++) {
+			for (var i = 0; i < Math.min(currentNode.childNode.length,1); i++) {
 				stack.push(currentNode.childNode[i]);
 			}
 
@@ -31,12 +31,12 @@ TP3.Render = {
 
 			var translate = new THREE.Matrix4();
 			translate.makeTranslation(middleVec.x, middleVec.y, middleVec.z);
-			cylinderGeometry.applyMatrix4(translate);
+			cylinderGeometry.applyMatrix4 (translate);
 
 			// Feuilles
 			if ((currentNode.a0 < alpha * leavesCutoff) || (currentNode.childNode.length == 0)) {
 				for (i = 0; i < leavesDensity; i++) {
-					var leafGeometry = new THREE.PlaneBufferGeometry(alpha, alpha);
+					var leafGeometry = new THREE.PlaneBufferGeometry(alpha/2, alpha/2);
 					var rotation = Math.random() * 2 * Math.PI;
 					leafGeometry.rotateX(rotation);
 					leafGeometry.rotateY(rotation);
@@ -65,6 +65,7 @@ TP3.Render = {
 						transY = currentNode.p0.y + (p0moinsp1.y * Math.random()) + radiusVector.y;
 						transZ = currentNode.p0.z + (p0moinsp1.z * Math.random()) + radiusVector.z;
 					} else {
+						console.log("pass");
 						transX = currentNode.p0.x + (p0moinsp1plusalpha.x * Math.random()) + radiusVector.x;
 						transY = currentNode.p0.y + (p0moinsp1plusalpha.y * Math.random()) + radiusVector.y;
 						transZ = currentNode.p0.z + (p0moinsp1plusalpha.z * Math.random()) + radiusVector.z;
@@ -119,47 +120,64 @@ TP3.Render = {
 
 				}
 			}
-			//verif si cette condition passe (how about if(currentNode.parentNode)?)
-			if (!(currentNode.parentNode === undefined)){
-				indices.push();
-				//lien entre sections[0] et parent
-				//lien entre section[i+1] et section[i]
 
-				//indice du debut de top
-				let index0top;
-				//indice du debut de top
-				let index0bot;
+			//indice du debut de top
+			let index0top;
+			//indice du debut de top
+			let index0bot;
 
-				//lien lien entre section[i+1] et section[i] i = 1 et length
-				for (i=0;i<currentNode.sections.length-1; i++){
-					//console.log(currentNode.sections[i])
-					index0top = currentNode.indice[i+1];
-					index0bot = currentNode.indice[i];
-					//console.log("bot:" + index0bot+ " top:" + index0top);
-					for (let j=0;j<currentNode.sections[i].length;j++){
-						// const a = currentNode.sections[i+1][j]
-						// const b = currentNode.sections[i+1][j+1]
-						// const c = currentNode.sections[i][j+1]
+			//lien lien entre section[i+1] et section[i] i = 1 et length
+			for (i=0;i<currentNode.sections.length-1; i++){
+				//console.log(currentNode.sections[i])
+				index0top = currentNode.indice[i+1];
+				index0bot = currentNode.indice[i];
+				//console.log("bot:" + index0bot+ " top:" + index0top);
+				for (let j=0;j<currentNode.sections[i].length;j++){
+					// const a = currentNode.sections[i+1][j]
+					// const b = currentNode.sections[i+1][j+1]
+					// const c = currentNode.sections[i][j+1]
 
-						let a = index0top+j;
-						let b = index0top+(j+1)%5;
-						let c = index0bot+(j+1)%5;
-						indices.push(a,b,c);
+					let a = index0top+j;
+					let b = index0top+(j+1)%5;
+					let c = index0bot+(j+1)%5;
+					indices.push(a,b,c);
 
-						a = index0top+j;
-						b = index0bot+(j+1)%5;
-						c = index0bot+j;
-						indices.push(a,b,c);
+					a = index0top+j;
+					b = index0bot+(j+1)%5;
+					c = index0bot+j;
+					indices.push(a,b,c);
 
-					}
 				}
 			}
+			//Bout de branche
+			//cond + clean?
+			if (currentNode.childNode.length == 0){
+				let index0 = currentNode.indice[currentNode.sections.length-1];
+				indices.push(index0 + 0, index0 + 2, index0 + 1);
+				indices.push(index0 + 2, index0 + 4, index0 + 3);
+				indices.push(index0 + 2, index0 + 0, index0 + 4);
+			}
 
+			var middleVec = currentNode.p1.add(currentNode.p0).multiplyScalar(0.5);
+
+			var dist = currentNode.p0.distanceTo(currentNode.p1);
+
+			var translate = new THREE.Matrix4();
+			translate.makeTranslation(middleVec.x, middleVec.y, middleVec.z);
+
+			var p0moinsp1 = new THREE.Vector3();
+			p0moinsp1.add(currentNode.p0);
+			p0moinsp1.sub(currentNode.p1);
 
 
 
 
 		}
+		//On rajoute la base (Est-ce que l'on veut ca)
+		indices.push(0,2,1);
+		indices.push(2,4,3);
+		indices.push(2,0,4);
+
 		const f32vertices = new Float32Array(vertices);
 		const geometry = new THREE.BufferGeometry();
 		geometry.setAttribute("position", new THREE.BufferAttribute(f32vertices, 3));
