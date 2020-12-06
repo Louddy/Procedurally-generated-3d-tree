@@ -21,7 +21,6 @@
   <component name="ChangeListManager">
     <list default="true" id="dc92d315-27a3-4710-824a-511357c42901" name="Default Changelist" comment="fixed">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TP3_B2_RenderRough.html" beforeDir="false" afterPath="$PROJECT_DIR$/TP3_B2_RenderRough.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TP3_Physics.js" beforeDir="false" afterPath="$PROJECT_DIR$/TP3_Physics.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TP3_Render.js" beforeDir="false" afterPath="$PROJECT_DIR$/TP3_Render.js" afterDir="false" />
     </list>
@@ -66,6 +65,8 @@
       <workItem from="1605802994664" duration="18565000" />
       <workItem from="1605986110392" duration="40641000" />
       <workItem from="1607011731966" duration="14675000" />
+      <workItem from="1607193905817" duration="126000" />
+      <workItem from="1607267272104" duration="20064000" />
     </task>
     <task id="LOCAL-00001" summary="toute faite esti">
       <created>1606498727938</created>

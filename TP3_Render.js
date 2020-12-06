@@ -16,7 +16,9 @@ TP3.Render = {
 				stack.push(currentNode.childNode[i]);
 			}
 
-			var middleVec = currentNode.p1.add(currentNode.p0).multiplyScalar(0.5);
+			var middleVec = currentNode.p1.clone();
+			middleVec.add(currentNode.p0);
+			middleVec.multiplyScalar(0.5);
 
 			var dist = currentNode.p0.distanceTo(currentNode.p1);
 			var cylinderGeometry = new THREE.CylinderBufferGeometry(currentNode.a0, currentNode.a1,
@@ -98,9 +100,6 @@ TP3.Render = {
 		const vertices = [];
 		const indices = [];
 		var leafVertices = [];
-		// const f32vertices = new Float32Array(vertices);
-		// const geometry = new THREE.BufferGeometry();
-		// geometry.setAttribute("position", new THREE.BufferAttribute(f32vertices, 3));
 
 		console.log(rootNode);
 		var stack = [];
@@ -115,15 +114,17 @@ TP3.Render = {
 
 			//Nec?
 			currentNode.indice = [];
+			currentNode.leafIndice = [];
 			//console.log(currentNode.indice);
 			//On push les sommets dans une belle liste
-			for (let i=0;i<currentNode.sections.length;i++){
+			for (let i=0;i<currentNode.sections.length;i++) {
 				currentNode.indice[i] = vertices.length/3;
-				for (let j=0;j<currentNode.sections[i].length;j++){
+				//console.log(currentNode.indice[0]);
+
+				for (let j=0;j<currentNode.sections[i].length;j++) {
 					vertices.push(currentNode.sections[i][j].x);
 					vertices.push(currentNode.sections[i][j].y);
 					vertices.push(currentNode.sections[i][j].z);
-
 				}
 			}
 
@@ -167,7 +168,7 @@ TP3.Render = {
 			// Feuilles
 			if ((currentNode.a0 < alpha * leavesCutoff) || (currentNode.childNode.length == 0)) {
 				for (i = 0; i < leavesDensity; i++) {
-					// var leafGeometry = new THREE.PlaneBufferGeometry(alpha, alpha);
+					currentNode.leafIndice.push(leafVertices.length);
 
 					// Création d'un triangle équilatéral d'arête alpha
 					var rotate = new THREE.Matrix4();
@@ -283,11 +284,46 @@ TP3.Render = {
 		scene.add(mesh);
 		scene.add(leaves);
 
-		console.log(leafVertices);
+		return [geometry, leafGeometry];
 	},
 	
 	updateTreeHermite: function (trunkGeometryBuffer, leavesGeometryBuffer, rootNode) {
-		//TODO
+		var stack = [];
+		stack.push(rootNode);
+		//console.log(trunkGeometryBuffer);
+		while (stack.length > 0) {
+			var currentNode = stack.pop();
+
+			for (var i = 0; i < currentNode.childNode.length; i++) {
+				stack.push(currentNode.childNode[i]);
+			}
+
+
+			for (let i = 0; i < 20; i++) { // pour chaque vertex
+				let vertex = new THREE.Vector3(trunkGeometryBuffer[3*currentNode.indice[0] + (i*3)], trunkGeometryBuffer[3*currentNode.indice[0] + (i*3) + 1], trunkGeometryBuffer[3*currentNode.indice[0] + (i*3) + 2])
+				vertex.applyMatrix4(currentNode.transform);
+
+				trunkGeometryBuffer[3*currentNode.indice[0] + (i*3)] = vertex.x;
+				trunkGeometryBuffer[3*currentNode.indice[0] + (i*3) + 1] = vertex.y;
+				trunkGeometryBuffer[3*currentNode.indice[0] + (i*3) + 2] = vertex.z;
+
+			}
+
+			for (let i = 0; i < currentNode.leafIndice.length; i++) { //pour chaque feuille
+				for (let j = 0; j < 3; j++) { // pour chaque point
+
+					let trianglePoint = new THREE.Vector3(leavesGeometryBuffer[currentNode.leafIndice[i] + (j*3)], leavesGeometryBuffer[currentNode.leafIndice[i] + (j*3) + 1], leavesGeometryBuffer[currentNode.leafIndice[i] + (j*3) + 2]);
+
+					trianglePoint.applyMatrix4(currentNode.transform);
+
+					leavesGeometryBuffer[currentNode.leafIndice[i] + (j*3)] = trianglePoint.x;
+					leavesGeometryBuffer[currentNode.leafIndice[i] + (j*3) + 1] = trianglePoint.y;
+					leavesGeometryBuffer[currentNode.leafIndice[i] + (j*3) + 2] = trianglePoint.z;
+				}
+
+			}
+		}
+
 	},
 	
 	drawTreeSkeleton: function (rootNode, scene, color = 0xffffff, matrix = new THREE.Matrix4()) {

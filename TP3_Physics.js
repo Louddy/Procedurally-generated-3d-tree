@@ -50,6 +50,13 @@ TP3.Physics = {
 		// Ajouter la gravite
 		node.vel.add(new THREE.Vector3(0, -node.mass, 0).multiplyScalar(dt));
 
+
+		// On applique la transformation de la branche parent à ses enfants.
+		if (node.parentNode) {
+			node.p0.applyMatrix4(node.parentNode.transform);
+			node.p1.applyMatrix4(node.parentNode.transform);
+		}
+
 		// ---------- Application de la vélocité ------------------------------
 		var p1moinsp0 = new THREE.Vector3();
 		p1moinsp0.add(node.p1);
@@ -63,28 +70,43 @@ TP3.Physics = {
 		p1tplusdtmoinsp0.normalize();
 
 		var rotateBranch = new THREE.Matrix4();
+		var transform = new THREE.Matrix4();
+
 
 		if (p1moinsp0.dot(p1tplusdtmoinsp0) > 1e-6) { // Sinon le squelette disparait devant nos yeux après quelques secondes.
 			[rotAxis, rotAngle] = TP3.Geometry.findRotation(p1moinsp0, p1tplusdtmoinsp0);
+			rotateBranch.makeRotationAxis(rotAxis, rotAngle);
+
+			var toOrigin = new THREE.Matrix4();
+			var fromOrigin = new THREE.Matrix4();
+			var transform = new THREE.Matrix4();
+			toOrigin.makeTranslation(-node.p0.x, -node.p0.y, -node.p0.z);
+			fromOrigin.makeTranslation(node.p0.x, node.p0.y, node.p0.z);
+			transform.premultiply(toOrigin);
+			transform.premultiply(rotateBranch);
+			transform.premultiply(fromOrigin);
 		}
 
-		rotateBranch.makeRotationAxis(rotAxis, rotAngle);
 
-		var toOrigin = new THREE.Matrix4();
-		var fromOrigin = new THREE.Matrix4();
-		var transform = new THREE.Matrix4();
-		toOrigin.makeTranslation(-node.p0.x, -node.p0.y, -node.p0.z);
-		fromOrigin.makeTranslation(node.p0.x, node.p0.y, node.p0.z);
-		transform.multiply(fromOrigin);
-		transform.multiply(rotateBranch);
-		transform.multiply(toOrigin);
+
+		// if (node.parentNode !== undefined) {
+		// 	transform.multiply(node.parentNode.transform);
+		// }
 
 		var p1t = node.p1.clone();
-		const mesure = (node.p1.clone().sub(node.p0)).length() - (node.bp1.clone().sub(node.bp0)).length();
-		console.log(node.p1);
-		console.log(mesure);
-		//console.log(transform);
+		// const mesure = (node.p1.clone().sub(node.p0)).length() - (node.bp1.clone().sub(node.bp0)).length();
+		// console.log(node.p1);
+		// console.log(mesure);
+		// console.log(transform);
 		node.p1.applyMatrix4(transform);
+
+		if (node.parentNode) {
+			node.transform = transform.premultiply(node.parentNode.transform);
+		} else {
+			node.transform = transform;
+		}
+		// console.log(node.transform.determinant());
+
 
 		//console.log((node.p1.clone().sub(node.p0)).length() + 'b');
 
@@ -100,18 +122,20 @@ TP3.Physics = {
 		var actualDir = new THREE.Vector3();
 		initialDir.add(node.rp1);
 		initialDir.sub(node.rp0);
-		var restitutionVel = initialDir.clone();
+		// var restitutionVel = initialDir.clone();
 		initialDir.normalize();
 		actualDir.add(node.p1);
 		actualDir.sub(node.p0);
+		var restitutionVel = actualDir.clone();
 		actualDir.normalize();
 
-		[velRotAxis, velRotAngle] = TP3.Geometry.findRotation(initialDir, actualDir);
-		var velRotAngleSq = (velRotAngle*velRotAngle);
 		var rotateVel = new THREE.Matrix4();
-		rotateVel.makeRotationAxis(velRotAxis, -velRotAngleSq);
 
-		// var restitutionVel = initialDir.clone(); // va avant le normalize? surement
+		if (initialDir.dot(actualDir) > 1e-6) {
+			[velRotAxis, velRotAngle] = TP3.Geometry.findRotation(initialDir, actualDir);
+			var velRotAngleSq = (velRotAngle*velRotAngle);
+			rotateVel.makeRotationAxis(velRotAxis, -velRotAngleSq);
+		}
 
 		restitutionVel.applyMatrix4(rotateVel);
 		restitutionVel.multiplyScalar(node.a0*1000);
@@ -120,14 +144,10 @@ TP3.Physics = {
 		// ---------- Facteur d'amortissement ---------------------------------
 		node.vel.multiplyScalar(0.7);
 
-		//pt prendre cette vélocité et en faire une matrice de transformation avec transform? entk ça prend un matrice
-		//de transformation à sauvegarder dans node.
+
 
 		// Appel recursif sur les enfants
 		for (var i=0; i<node.childNode.length; i++) {
-			node.childNode[i].p0.applyMatrix4(transform);
-			node.childNode[i].p1.applyMatrix4(transform);
-
 			// if (node.childNode[i].childNode.length == 0) {
 			// 	var xd1 = new THREE.Vector3();
 			// 	var xd2 = new THREE.Vector3();
