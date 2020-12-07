@@ -65,7 +65,7 @@ TP3.Render = {
 					var transX;
 					var transY;
 					var transZ;
-					// Est-ce qu'on veut utiliser p1moinsp0 plutôt?
+
 					var p0moinsp1plusalpha = p0moinsp1.multiplyScalar(1+(alpha/p0moinsp1.length()));
 
 					if (currentNode.childNode.length == 0) {
@@ -112,14 +112,22 @@ TP3.Render = {
 				stack.push(currentNode.childNode[i]);
 			}
 
-			//Nec?
 			currentNode.indice = [];
 			currentNode.leafIndice = [];
-			//console.log(currentNode.indice);
+
+			if (!currentNode.parentNode){
+				currentNode.indice[0] = 0;
+				for (let j=0;j<currentNode.sections[0].length;j++){
+					vertices.push(currentNode.sections[0][j].x);
+					vertices.push(currentNode.sections[0][j].y);
+					vertices.push(currentNode.sections[0][j].z);
+
+				}
+			}
+
 			//On push les sommets dans une belle liste
 			for (let i=0;i<currentNode.sections.length;i++) {
 				currentNode.indice[i] = vertices.length/3;
-				//console.log(currentNode.indice[0]);
 
 				for (let j=0;j<currentNode.sections[i].length;j++) {
 					vertices.push(currentNode.sections[i][j].x);
@@ -135,15 +143,15 @@ TP3.Render = {
 
 			//lien lien entre section[i+1] et section[i] i = 1 et length
 			for (i=0;i<currentNode.sections.length-1; i++){
-				//console.log(currentNode.sections[i])
-				index0top = currentNode.indice[i+1];
-				index0bot = currentNode.indice[i];
-				//console.log("bot:" + index0bot+ " top:" + index0top);
-				for (let j=0;j<currentNode.sections[i].length;j++){
-					// const a = currentNode.sections[i+1][j]
-					// const b = currentNode.sections[i+1][j+1]
-					// const c = currentNode.sections[i][j+1]
+				if (i==0 && currentNode.parentNode){
+					index0top = currentNode.indice[i+1];
+					index0bot = currentNode.parentNode.indice[currentNode.sections.length-1];
+				}else{
+					index0top = currentNode.indice[i+1];
+					index0bot = currentNode.indice[i];
+				}
 
+				for (let j=0;j<currentNode.sections[i].length;j++){
 					let a = index0top+j;
 					let b = index0top+(j+1)%5;
 					let c = index0bot+(j+1)%5;
@@ -153,11 +161,9 @@ TP3.Render = {
 					b = index0bot+(j+1)%5;
 					c = index0bot+j;
 					indices.push(a,b,c);
-
 				}
 			}
 			//Bout de branche
-			//cond + clean?
 			if (currentNode.childNode.length == 0){
 				let index0 = currentNode.indice[currentNode.sections.length-1];
 				indices.push(index0 + 0, index0 + 2, index0 + 1);
@@ -256,7 +262,7 @@ TP3.Render = {
 			}
 		}
 
-		//On rajoute la base (Est-ce que l'on veut ca)
+		//On rajoute la base
 		indices.push(0,2,1);
 		indices.push(2,4,3);
 		indices.push(2,0,4);
@@ -290,7 +296,7 @@ TP3.Render = {
 	updateTreeHermite: function (trunkGeometryBuffer, leavesGeometryBuffer, rootNode) {
 		var stack = [];
 		stack.push(rootNode);
-		//console.log(trunkGeometryBuffer);
+
 		while (stack.length > 0) {
 			var currentNode = stack.pop();
 
@@ -299,20 +305,38 @@ TP3.Render = {
 			}
 
 
-			for (let i = 0; i < 20; i++) { // pour chaque vertex
-				let vertex = new THREE.Vector3(trunkGeometryBuffer[3*currentNode.indice[0] + (i*3)], trunkGeometryBuffer[3*currentNode.indice[0] + (i*3) + 1], trunkGeometryBuffer[3*currentNode.indice[0] + (i*3) + 2])
-				vertex.applyMatrix4(currentNode.transform);
+			if (!currentNode.parentNode) {
+				for (let i = 0; i < 20; i++) {
+					let vertex = new THREE.Vector3(trunkGeometryBuffer[3*currentNode.indice[0] + (i*3)],
+						trunkGeometryBuffer[3*currentNode.indice[0] + (i*3) + 1],
+						trunkGeometryBuffer[3*currentNode.indice[0] + (i*3) + 2])
+					vertex.applyMatrix4(currentNode.transform);
 
-				trunkGeometryBuffer[3*currentNode.indice[0] + (i*3)] = vertex.x;
-				trunkGeometryBuffer[3*currentNode.indice[0] + (i*3) + 1] = vertex.y;
-				trunkGeometryBuffer[3*currentNode.indice[0] + (i*3) + 2] = vertex.z;
+					trunkGeometryBuffer[3*currentNode.indice[0] + (i*3)] = vertex.x;
+					trunkGeometryBuffer[3*currentNode.indice[0] + (i*3) + 1] = vertex.y;
+					trunkGeometryBuffer[3*currentNode.indice[0] + (i*3) + 2] = vertex.z;
 
+				}
+			} else {
+				for (let i = 0; i < 15; i++) {
+					let vertex = new THREE.Vector3(trunkGeometryBuffer[3*currentNode.indice[1] + (i*3)],
+						trunkGeometryBuffer[3*currentNode.indice[1] + (i*3) + 1],
+						trunkGeometryBuffer[3*currentNode.indice[1] + (i*3) + 2])
+					vertex.applyMatrix4(currentNode.transform);
+
+					trunkGeometryBuffer[3*currentNode.indice[1] + (i*3)] = vertex.x;
+					trunkGeometryBuffer[3*currentNode.indice[1] + (i*3) + 1] = vertex.y;
+					trunkGeometryBuffer[3*currentNode.indice[1] + (i*3) + 2] = vertex.z;
+
+				}
 			}
 
 			for (let i = 0; i < currentNode.leafIndice.length; i++) { //pour chaque feuille
 				for (let j = 0; j < 3; j++) { // pour chaque point
 
-					let trianglePoint = new THREE.Vector3(leavesGeometryBuffer[currentNode.leafIndice[i] + (j*3)], leavesGeometryBuffer[currentNode.leafIndice[i] + (j*3) + 1], leavesGeometryBuffer[currentNode.leafIndice[i] + (j*3) + 2]);
+					let trianglePoint = new THREE.Vector3(leavesGeometryBuffer[currentNode.leafIndice[i] + (j*3)],
+						leavesGeometryBuffer[currentNode.leafIndice[i] + (j*3) + 1],
+						leavesGeometryBuffer[currentNode.leafIndice[i] + (j*3) + 2]);
 
 					trianglePoint.applyMatrix4(currentNode.transform);
 

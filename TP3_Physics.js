@@ -20,6 +20,8 @@ TP3.Physics = {
 			currentNode.rp1 = currentNode.p1.clone();
 			currentNode.vel = new THREE.Vector3();
 			currentNode.strength = currentNode.a0;
+			currentNode.branchVector = currentNode.p1.clone();
+			currentNode.branchVector.sub(currentNode.p0);
 		}
 	},
 	
@@ -46,27 +48,28 @@ TP3.Physics = {
 		v += Math.cos(5 * time + 56485) * 0.4;
 
 		// Ajouter le vent
-		node.vel.add(new THREE.Vector3(u/Math.sqrt(node.mass), 0, v/Math.sqrt(node.mass)).multiplyScalar(dt));
+		node.vel.add(new THREE.Vector3(u / Math.sqrt(node.mass), 0,
+			v / Math.sqrt(node.mass)).multiplyScalar(dt));
 		// Ajouter la gravite
 		node.vel.add(new THREE.Vector3(0, -node.mass, 0).multiplyScalar(dt));
 
 
 		// On applique la transformation de la branche parent à ses enfants.
 		if (node.parentNode) {
-			node.p0.applyMatrix4(node.parentNode.transform);
-			node.p1.applyMatrix4(node.parentNode.transform);
+			node.bp0.applyMatrix4(node.parentNode.transform);
+			node.bp1.applyMatrix4(node.parentNode.transform);
 		}
 
 		// ---------- Application de la vélocité ------------------------------
 		var p1moinsp0 = new THREE.Vector3();
-		p1moinsp0.add(node.p1);
-		p1moinsp0.sub(node.p0);
+		p1moinsp0.add(node.bp1);
+		p1moinsp0.sub(node.bp0);
 		p1moinsp0.normalize();
 
 		var p1tplusdtmoinsp0 = new THREE.Vector3();
-		p1tplusdtmoinsp0.add(node.p1);
+		p1tplusdtmoinsp0.add(node.bp1);
 		p1tplusdtmoinsp0.add(node.vel.clone().multiplyScalar(dt));
-		p1tplusdtmoinsp0.sub(node.p0);
+		p1tplusdtmoinsp0.sub(node.bp0);
 		p1tplusdtmoinsp0.normalize();
 
 		var rotateBranch = new THREE.Matrix4();
@@ -80,92 +83,65 @@ TP3.Physics = {
 			var toOrigin = new THREE.Matrix4();
 			var fromOrigin = new THREE.Matrix4();
 			var transform = new THREE.Matrix4();
-			toOrigin.makeTranslation(-node.p0.x, -node.p0.y, -node.p0.z);
-			fromOrigin.makeTranslation(node.p0.x, node.p0.y, node.p0.z);
+			toOrigin.makeTranslation(-node.bp0.x, -node.bp0.y, -node.bp0.z);
+			fromOrigin.makeTranslation(node.bp0.x, node.bp0.y, node.bp0.z);
 			transform.premultiply(toOrigin);
 			transform.premultiply(rotateBranch);
 			transform.premultiply(fromOrigin);
 		}
 
-
-
-		// if (node.parentNode !== undefined) {
-		// 	transform.multiply(node.parentNode.transform);
-		// }
-
-		var p1t = node.p1.clone();
-		// const mesure = (node.p1.clone().sub(node.p0)).length() - (node.bp1.clone().sub(node.bp0)).length();
-		// console.log(node.p1);
-		// console.log(mesure);
-		// console.log(transform);
-		node.p1.applyMatrix4(transform);
-
 		if (node.parentNode) {
-			node.transform = transform.premultiply(node.parentNode.transform);
+			node.transform = transform.multiply(node.parentNode.transform);
 		} else {
 			node.transform = transform;
 		}
-		// console.log(node.transform.determinant());
 
+		var p1t = node.p1.clone();
 
-		//console.log((node.p1.clone().sub(node.p0)).length() + 'b');
+		node.p1.applyMatrix4(node.transform);
 
 		// ---------- Projection de la vélocité -------------------------------
 		var velDir = new THREE.Vector3();
-		velDir.add(node.p1);
-		velDir.sub(p1t);
+		velDir.sub(node.p1);
+		velDir.add(p1t);
 		var newVel = TP3.Geometry.project(node.vel, velDir);
 		node.vel = newVel.clone();
 
 		// ---------- Force de restitution ------------------------------------
+		/**
+		 * Nous ne sommes pas certains de ce qu'il faut faire précisément ici.
+		 */
 		var initialDir = new THREE.Vector3();
 		var actualDir = new THREE.Vector3();
 		initialDir.add(node.rp1);
 		initialDir.sub(node.rp0);
-		// var restitutionVel = initialDir.clone();
 		initialDir.normalize();
 		actualDir.add(node.p1);
 		actualDir.sub(node.p0);
-		var restitutionVel = actualDir.clone();
 		actualDir.normalize();
+
+		var restitutionVel = new THREE.Vector3();
+		restitutionVel.add(node.rp1);
+		restitutionVel.sub(node.p1);
 
 		var rotateVel = new THREE.Matrix4();
 
 		if (initialDir.dot(actualDir) > 1e-6) {
 			[velRotAxis, velRotAngle] = TP3.Geometry.findRotation(initialDir, actualDir);
-			var velRotAngleSq = (velRotAngle*velRotAngle);
+			var velRotAngleSq = (velRotAngle * velRotAngle);
 			rotateVel.makeRotationAxis(velRotAxis, -velRotAngleSq);
 		}
 
-		restitutionVel.applyMatrix4(rotateVel);
-		restitutionVel.multiplyScalar(node.a0*1000);
+		restitutionVel.multiplyScalar(node.a0 * 100 * velRotAngleSq/(2*Math.PI));
 		node.vel.add(restitutionVel);
 
 		// ---------- Facteur d'amortissement ---------------------------------
 		node.vel.multiplyScalar(0.7);
 
-
-
 		// Appel recursif sur les enfants
 		for (var i=0; i<node.childNode.length; i++) {
-			// if (node.childNode[i].childNode.length == 0) {
-			// 	var xd1 = new THREE.Vector3();
-			// 	var xd2 = new THREE.Vector3();
-			// 	xd1.add(node.childNode[i].bp1);
-			// 	xd1.sub(node.childNode[i].bp0);
-			// 	xd2.add(node.childNode[i].p1);
-			// 	xd2.sub(node.childNode[i].p0);
-			//
-			// 	//console.log("conservation ?");
-			// 	//console.log(xd1.length());
-			// 	//console.log(xd2.length());
-			// }
-
-			// console.log(node.childNode[i].childNode.length);
-
 			this.applyForces(node.childNode[i], dt, time);
 		}
-		//console.log(node);
 	}
 
 

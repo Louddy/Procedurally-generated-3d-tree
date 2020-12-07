@@ -19,8 +19,9 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="dc92d315-27a3-4710-824a-511357c42901" name="Default Changelist" comment="fixed">
+    <list default="true" id="dc92d315-27a3-4710-824a-511357c42901" name="Default Changelist" comment=":)">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TP3_Geometry.js" beforeDir="false" afterPath="$PROJECT_DIR$/TP3_Geometry.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TP3_Physics.js" beforeDir="false" afterPath="$PROJECT_DIR$/TP3_Physics.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TP3_Render.js" beforeDir="false" afterPath="$PROJECT_DIR$/TP3_Render.js" afterDir="false" />
     </list>
@@ -66,7 +67,7 @@
       <workItem from="1605986110392" duration="40641000" />
       <workItem from="1607011731966" duration="14675000" />
       <workItem from="1607193905817" duration="126000" />
-      <workItem from="1607267272104" duration="20064000" />
+      <workItem from="1607267272104" duration="32480000" />
     </task>
     <task id="LOCAL-00001" summary="toute faite esti">
       <created>1606498727938</created>
@@ -89,7 +90,14 @@
       <option name="project" value="LOCAL" />
       <updated>1607108721216</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary=":)">
+      <created>1607296290707</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1607296290707</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -111,6 +119,7 @@
     <MESSAGE value="toute faite esti" />
     <MESSAGE value="pas toute fait esti" />
     <MESSAGE value="fixed" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed" />
+    <MESSAGE value=":)" />
+    <option name="LAST_COMMIT_MESSAGE" value=":)" />
   </component>
 </project>
